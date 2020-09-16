@@ -1,11 +1,11 @@
 header {
-    height: 80px;
+    height: 60px;
     text-align: center;
     background-color: darkcyan;
     color: white;
     text-shadow: 1px 1px 1px black;
-    line-height: 80px;
     box-shadow: 1px 2px 2px black;
+    line-height: 60px;
 }
 
 #resContainer {
@@ -16,5 +16,5 @@ header {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 50px;
+    padding-top: 20px;
 }
