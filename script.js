@@ -28,7 +28,14 @@ const randomizeFoodPosition = () => {
     valueX = Math.floor(Math.random() * 15 + 1) * pixelSize;
     valueY = Math.floor(Math.random() * 15 + 1) * pixelSize;
     
-    
+    if (!snake.some(item => item.x == valueX && item.y == valueY)) {
+        food.x = valueX;
+        food.y = valueY;
+    } else {
+        randomizeFoodPosition();
+    }
+
+
 }
 
 const createBackground = () => {
@@ -104,8 +111,7 @@ const checkSnakeCollision = () => {
     if (snakeX != food.x || snakeY != food.y) {
         snake.pop(); //pop tira o último elemento da lista
     } else {
-        food.x = Math.floor(Math.random() * 15 + 1) * pixelSize;
-        food.y = Math.floor(Math.random() * 15 + 1) * pixelSize;
+        randomizeFoodPosition();
     }
 
     let newHead = {
