@@ -9,8 +9,35 @@ let snake = []
 
 snake[0] = {
     x: 0 * pixelSize,
-    y: 15 * pixelSize,
+    y: 0 * pixelSize,
 }
+
+function wall(posX, posY) {
+    this.x = posX,
+    this.y = posY
+}
+
+const obstacles = [
+    new wall(0, 1),
+    new wall(0, 2),
+    new wall(0, 3),
+    new wall(0, 9),
+    new wall(0, 10),
+    new wall(0, 11),
+    new wall(0, 12),
+    new wall(19, 5),
+    new wall(19, 6),
+    new wall(19, 10),
+    new wall(19, 11),
+    new wall(19, 12),
+    new wall(19, 13),
+    new wall(19, 16),
+    new wall(19, 17),
+    new wall(19, 18),
+    new wall(19, 19)
+]
+
+
 
 const snakeVelocity = 1;
 
@@ -42,6 +69,13 @@ const createBackground = () => {
     stage.height = pixelQuantity;
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, stage.width, stage.height);
+}
+
+const createObstacles = () => {
+    obstacles.forEach(item => {
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(item.x * pixelSize, item.y * pixelSize, pixelSize, pixelSize);
+    })
 }
 
 const drawSnake = () => {
@@ -110,45 +144,55 @@ const checkSnakePosition = () => {
 }
 
 const checkSnakeCollision = () => {
-
     for (i = 1; i < snake.length; i++) {
         if (snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
             gameOver();
         }
+        
+        
     }
 
-    let snakeX = snake[0].x;
-    let snakeY = snake[0].y;
-
-    if (snakeX != food.x || snakeY != food.y) {
-        snake.pop(); //pop tira o último elemento da lista
-    } else {
-        randomizeFoodPosition();
+    if (obstacles.some(obst => (obst.x * pixelSize) == snake[0].x && (obst.y * pixelSize) == snake[0].y)) {
+        gameOver();
     }
+    else {
+        let snakeX = snake[0].x;
+        let snakeY = snake[0].y;
 
-    let newHead = {
-        x: snakeX,
-        y: snakeY
+        if (snakeX != food.x || snakeY != food.y) {
+            snake.pop(); //pop tira o último elemento da lista
+        } else {
+            randomizeFoodPosition();
+        }
+
+        let newHead = {
+            x: snakeX,
+            y: snakeY
+        }
+
+        snake.unshift(newHead);
     }
-
-    snake.unshift(newHead);
 }
 
 const gameOver = () => {
     //clearInterval(jogo);
     direction = ""
-    for (i = snake.length; i > 0; i--) {
+    for (i = snake.length; i > 1; i--) {
         snake.pop();
-        console.log("Snake Length: " + snake.length)
-        createBackground();
-        createSnake();
     }
 
     alert('Game Over :(');
+    restartGame();
+}
+
+const restartGame = () => {
+    snake[0].x = 0 * pixelSize;
+    snake[0].y = 0 * pixelSize;
 }
 
 const update = () => {
     createBackground();
+    createObstacles();
     checkSnakePosition();
     drawSnake();
     

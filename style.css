@@ -8,10 +8,6 @@ header {
     line-height: 60px;
 }
 
-#resContainer {
-    text-align: center;
-}
-
 #canvasStage {
     display: block;
     margin-left: auto;
