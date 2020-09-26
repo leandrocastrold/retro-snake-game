@@ -14,3 +14,9 @@ header {
     margin-right: auto;
     padding-top: 20px;
 }
+
+#container-record {
+    text-align: center;
+    font-size: 30pt;
+    font-weight: bolder;
+}
