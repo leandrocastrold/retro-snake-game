@@ -1,6 +1,9 @@
 # retro-snake-game
 
-![](snake.gif)
+<p align="center">
+  <img src="snake.gif">
+</p>
+
 
 
 Jogo da cobrinha feito com Javascript puro.
