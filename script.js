@@ -44,23 +44,6 @@ const food = {
     y: Math.floor(Math.random() * 15 + 1) * pixelSize
 }
 
-const drawFood = () => {
-    ctx.fillStyle = "red";
-    ctx.fillRect(food.x, food.y, pixelSize, pixelSize);
-}
-
-const randomizeFoodPosition = () => {
-    valueX = Math.floor(Math.random() * 15 + 1) * pixelSize;
-    valueY = Math.floor(Math.random() * 15 + 1) * pixelSize;
-
-    if (!snake.some(item => item.x == valueX && item.y == valueY)) {
-        food.x = valueX;
-        food.y = valueY;
-    } else {
-        randomizeFoodPosition();
-    }
-}
-
 const createBackground = () => {
     pixelQuantity = 20 * pixelSize;
     stage.width = pixelQuantity;
@@ -77,9 +60,26 @@ const showScore = () => {
 
 const createObstacles = () => {
     obstacles.forEach(item => {
-        ctx.fillStyle = "yellow";
+        ctx.fillStyle = "grey";
         ctx.fillRect(item.x * pixelSize, item.y * pixelSize, pixelSize, pixelSize);
     })
+}
+
+const drawFood = () => {
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, pixelSize, pixelSize);
+}
+
+const randomizeFoodPosition = () => {
+    valueX = Math.floor(Math.random() * 15 + 1) * pixelSize;
+    valueY = Math.floor(Math.random() * 15 + 1) * pixelSize;
+
+    if (!snake.some(item => item.x == valueX && item.y == valueY)) {
+        food.x = valueX;
+        food.y = valueY;
+    } else {
+        randomizeFoodPosition();
+    }
 }
 
 const drawSnake = () => {
@@ -161,8 +161,7 @@ const checkSnakeCollision = () => {
         let snakeY = snake[0].y;
 
         if (snakeX != food.x || snakeY != food.y) {
-
-            snake.pop(); //pop tira o último elemento da lista
+            snake.pop(); 
         } else {
             score += 20
             randomizeFoodPosition();
@@ -172,21 +171,39 @@ const checkSnakeCollision = () => {
             x: snakeX,
             y: snakeY
         }
-
         snake.unshift(newHead);
     }
 }
 
 const gameOver = () => {
-    //clearInterval(jogo);
     checkRecord();
     direction = ""
     for (i = snake.length; i > 1; i--) {
         snake.pop();
     }
-
     alert('Game Over :(');
     restartGame();
+}
+
+
+const restartGame = () => {
+    snake[0].x = 0 * pixelSize;
+    snake[0].y = 0 * pixelSize;
+    score = 0;
+    showRecord();
+}
+
+const update = () => {
+    createBackground();
+    createObstacles();
+    checkSnakePosition();
+    drawSnake();
+
+    checkSnakeCollision();
+    drawFood();
+    setSnakeMovement();
+    showScore();
+
 }
 
 const showRecord = () => {
@@ -203,31 +220,11 @@ const checkRecord = () => {
         if (score > currentScore) {
             localStorage.setItem('record', score)
             console.log(`Temos um novo record: ${score}`);
-
         }
 
     } else {
         localStorage.setItem('record', score)
     }
-}
-
-const restartGame = () => {
-    snake[0].x = 0 * pixelSize;
-    snake[0].y = 0 * pixelSize;
-    showRecord();
-}
-
-const update = () => {
-    createBackground();
-    createObstacles();
-    checkSnakePosition();
-    drawSnake();
-
-    checkSnakeCollision();
-    drawFood();
-    setSnakeMovement();
-    showScore();
-
 }
 
 
